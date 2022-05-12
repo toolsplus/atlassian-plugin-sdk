@@ -1,20 +1,26 @@
-FROM openjdk:8-jdk
+FROM openjdk:8-jdk-alpine
 
-ARG SDK_VERSION=6.3.12
+RUN apk add --no-cache curl tar bash procps
+
+ARG ATLASSIAN_PLUGIN_SDK_VERSION=8.2.7
 ARG BASE_URL=https://packages.atlassian.com/maven/repository/public/com/atlassian/amps/
 
 RUN mkdir -p /usr/share/atlassian-plugin-sdk \
-  && curl -fsSL -o /tmp/atlassian-plugin-sdk.tar.gz ${BASE_URL}/atlassian-plugin-sdk/${SDK_VERSION}/atlassian-plugin-sdk-${SDK_VERSION}.tar.gz \
+  && curl -fsSL -o /tmp/atlassian-plugin-sdk.tar.gz ${BASE_URL}/atlassian-plugin-sdk/${ATLASSIAN_PLUGIN_SDK_VERSION}/atlassian-plugin-sdk-${ATLASSIAN_PLUGIN_SDK_VERSION}.tar.gz \
   && tar -xzf /tmp/atlassian-plugin-sdk.tar.gz -C /usr/share \
   && rm -f /tmp/atlassian-plugin-sdk.tar.gz \
-  && ln -s /usr/share/atlassian-plugin-sdk-${SDK_VERSION}/bin/* /usr/bin/
+  && ln -s /usr/share/atlassian-plugin-sdk-${ATLASSIAN_PLUGIN_SDK_VERSION}/bin/* /usr/bin/
 
 # Add AWS CLI
-ARG AWS_CLI_VERSION=1.16.60
+ARG AWS_CLI_VERSION=1.19.112
 
-RUN apt-get update \
-  && apt-get install -y python python-pip \
+RUN apk -v --update add python py-pip \
   && pip install --upgrade awscli==${AWS_CLI_VERSION} \
-  && apt-get --purge -y remove python-pip
+  && apk -v --purge del py-pip \
+  && rm /var/cache/apk/*
 
-CMD atlas-version && aws --version
+# Add node and yarn
+RUN apk -v --update add nodejs yarn \
+    && rm /var/cache/apk/*
+
+CMD atlas-version && aws --version && yarn --version

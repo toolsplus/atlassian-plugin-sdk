@@ -1,6 +1,6 @@
 # Atlassian Plugin SDK Dockerfile
 
-[![Docker Build Status](https://img.shields.io/docker/build/toolsplus/atlassian-plugin-sdk.svg)]()
+[![Docker image build](https://github.com/toolsplus/atlassian-plugin-sdk/actions/workflows/docker-build.yml/badge.svg)](https://github.com/toolsplus/atlassian-plugin-sdk/actions/workflows/docker-build.yml)
 
 This repository contains a **Dockerfile** for Atlassian Plugin SDK based on **openjdk:8-jdk-alpine**. This 
 also includes the AWS CLI.
