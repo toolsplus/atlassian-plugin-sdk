@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-alpine
+FROM eclipse-temurin:11-alpine
 
 RUN apk add --no-cache curl tar bash procps
 
