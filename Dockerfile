@@ -1,10 +1,10 @@
-FROM openjdk:17-jdk-alpine
+FROM openjdk:11-jdk-alpine
 
 RUN apk add --no-cache curl tar bash procps
 
 # Install custom Maven version because the on included in the Atlassian plugin SDK is not compatible with the SDK - doh!
 # https://community.developer.atlassian.com/t/amps-8-3-1-build-failure/54483
-ENV MAVEN_VERSION 3.8.5
+ENV MAVEN_VERSION 3.8.6
 ENV MAVEN_HOME /usr/lib/mvn
 ENV PATH $MAVEN_HOME/bin:$PATH
 
@@ -13,7 +13,7 @@ RUN wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/ap
   rm apache-maven-$MAVEN_VERSION-bin.tar.gz && \
   mv apache-maven-$MAVEN_VERSION /usr/lib/mvn
 
-ARG ATLASSIAN_PLUGIN_SDK_VERSION=8.2.7
+ARG ATLASSIAN_PLUGIN_SDK_VERSION=8.2.6
 ARG BASE_URL=https://packages.atlassian.com/maven/repository/public/com/atlassian/amps/
 
 # Configure ATLAS_MVN to ensure the SDK picks up the custom Maven version
